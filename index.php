@@ -1,3 +1,17 @@
+<?php
+
+$contacts = [
+  ["name" => "Pepe", "phone_number" => "2132139"], /*Generamos un diccionario, pero usando => en vez de {:}*/
+  ["name" => "Antonio", "phone_number" => "982392"],
+  ["name" => "Nate", "phone_number" => "329847"],
+  ["name" => "Rodrigo", "phone_number" => "4353234"],
+  ["name" => "Marcos", "phone_number" => "12312432"],
+];
+/*Definimos una variable que cuando se ejecute este programa, es una variable que estará disponible y que 
+podremos usar en cualquier punto de nuestro HTML*/
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -57,39 +71,18 @@
     <main>
         <div class="container pt-4 p-3">
           <div class="row">
-            <div class="col-md-4 mb-3">
-              <div class="card text-center">
-                <div class="card-body">
-                  <h3 class="card-title text-capitalize">Contact Name 1</h3>
-                  <p class="m-2">987654321</p>
-                  <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                  <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
+            <?php foreach ($contacts as $contact): ?> <!--Generamos un bucle con el PHP para establecer los contactos de manera DINÁMICA-->
+              <div class="col-md-4 mb-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3> <!--Buscamos el valor del nombre del contacto-->
+                    <p class="m-2"><?= $contact["phone_number"] ?></p> <!--Buscamos el valor del número del contacto-->
+                    <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
+                    <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
+                  </div>
                 </div>
               </div>
-            </div>
-    
-            <div class="col-md-4 mb-3">
-              <div class="card text-center">
-                <div class="card-body">
-                  <h3 class="card-title text-capitalize">Contact Name 2</h3>
-                  <p class="m-2">987654321</p>
-                  <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                  <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
-                </div>
-              </div>
-            </div>
-    
-            <div class="col-md-4 mb-3">
-              <div class="card text-center">
-                <div class="card-body">
-                  <h3 class="card-title text-capitalize">Contact Name 3</h3>
-                  <p class="m-2">987654321</p>
-                  <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                  <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php endforeach ?>
         </div>
       </main>
   </main>
