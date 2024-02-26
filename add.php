@@ -1,3 +1,31 @@
+<!--Con el PHP diferenciamos cuando nos están pidiendo el formulario y cuando nos están mandando datos-->
+
+<?php
+/*En PHP existen las variables super globales, que significa que están disponibles en cualquier archivo de nuestro PHP
+* Por ejemplo, la supervariable _SERVER que contiene info sobre la petición HTTP que nos han mandado, además de más cosas*/
+  if($_SERVER["REQUEST_METHOD"] == "POST") { /*Aquí es donde me estan enviando a mí datos*/
+    $contact = [
+      "name"=> $_POST["name"],
+      "phone_number"=> $_POST["phone_number"],
+    ];
+    /*A continuación, intentamos almacenar esto en un archivo*/
+    if (file_exists("contacts.json")) {
+      $contacts = json_decode(file_get_contents("contacts.json"), true); /*Con json_decode convertimos un json en un string (array asociativo con el parámetro assoc en true)*/
+    } else{
+      $contacts = [];
+    } /*Generamos una lista con los contactos existentes, en caso de que no haya ninguno, generamos una lista vacía*/
+    
+    $contacts[] = $contact; /*$contacts[] = $contact; Es el método que se utiliza para añadir contenido a una lista. Es como el .append en pyhon*/
+
+    /*Guardamos la lista generada en un fichero json., usamos la función json_encode para generar el archivo. Se le pasa un array asociativo (un diccionario, lista...)
+    * Usamos la función file_put_contents para poner el contenido en un archivo y gener el archivo*/
+    file_put_contents("contacts.json", json_encode($contacts));
+
+    /*Ahora vamos a ver como redirigimos al navegador para que nos devuelva a la página de index*/
+    header("Location: index.php"); /*Definimos una cabecera y le indicamos que vuelva a nuestro index*/
+  } 
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,10 +72,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html">Home</a>
+            <a class="nav-link" href="./index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./add.html">Add Contact</a>
+            <a class="nav-link" href="./add.php">Add Contact</a>
           </li>
         </ul>
       </div>
@@ -61,7 +89,8 @@
             <div class="card">
               <div class="card-header">Add New Contact</div>
               <div class="card-body">
-                <form>
+                <form method="POST" action="add.php"> <!--El metodo POST indica que las peticiones HTTP tipo POST. 
+                Action para que mande la respuesta, y definimos el archivo, en este caso, será este mismo archivo-->
                   <div class="mb-3 row">
                     <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
       
