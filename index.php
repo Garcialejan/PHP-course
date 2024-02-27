@@ -3,14 +3,20 @@
 /*Definimos una variable que cuando se ejecute este programa, es una variable que estará disponible y que 
 podremos usar en cualquier punto de nuestro HTML
 * Definimos un bucle if, en el que si existe en fichero contacts.json generado en el add.php, nos generere los contactos en el index*/
-if (file_exists("contacts.json")) {
+/*if (file_exists("contacts.json")) {
   $contacts = json_decode(file_get_contents("contacts.json"), true); /*Con json_decode convertimos un json en un string (array asociativo con el parámetro assoc en true)*/
-} else{
-  $contacts = []; /*Generamos una lista vacía ya que no tenemos ningún contacto en nuestra base de datos*/
-}
+/*} else{
+  $contacts = []; /*Generamos una lista vacía ya que no tenemos ningún contacto en nuestra base de datos
+}*/ 
+// Dejamos todo lo anterior comentado porque lo implementamos antes de genera la base de datos con Mysql.
+// A continuación establecemos la conexión con la base de datos
+// En PHP, el operador -> se utiliza para acceder a métodos y propiedades de un objeto
+
+require "database.php";
+
+$contacts = $conn->query("SELECT * FROM contacts"); //El método query ejecuta una consulta SQL con la que pedimos los datos a la base de datos
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -72,7 +78,7 @@ if (file_exists("contacts.json")) {
         <div class="container pt-4 p-3">
           <div class="row">
 
-          <?php if (count($contacts) == 0): ?> <!--El count() en PHP es como el len() de Python. 
+          <?php if ($contacts->rowCount() == 0): ?> <!--El count() en PHP es como el len() de Python. Usamos rowCount(), porque si las filas son cero no hay datos
             * Con el siguiente, cuando no hay contactos, el usario lo que verá será un mensaje de que no tiene contcatos actualmente-->
             <div class="col-md-4 mx-auto">
               <div class="card card-body text-center">
