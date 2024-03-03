@@ -93,8 +93,9 @@ $contacts = $conn->query("SELECT * FROM contacts"); //El método query ejecuta u
                   <div class="card-body">
                     <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3> <!--Buscamos el valor del nombre del contacto-->
                     <p class="m-2"><?= $contact["phone_number"] ?></p> <!--Buscamos el valor del número del contacto-->
-                    <a href="#" class="btn btn-secondary mb-2">Edit Contact</a>
-                    <a href="#" class="btn btn-danger mb-2">Delete Contact</a>
+                    <a href="edit.php?id=<?= $contact["id"] ?>" class="btn btn-secondary mb-2">Edit Contact</a>
+                    <a href="delete.php?id=<?= $contact["id"] ?>" class="btn btn-danger mb-2">Delete Contact</a>
+                    <!--Con el "?" (query string) metemos el contenido directamente en la URL y extraemos la id que quereos que borre-->
                   </div>
                 </div>
               </div>
