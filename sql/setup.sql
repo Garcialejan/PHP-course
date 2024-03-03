@@ -11,3 +11,5 @@ CREATE TABLE contacts (
 );
 
 INSERT INTO contacts (name, phone_number) VALUES ("Pepe", "123456789");
+
+--Comentarios
