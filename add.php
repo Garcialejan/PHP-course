@@ -41,12 +41,12 @@ $error = null; // POr defecto asumimos que no hay errores
       //file_put_contents("contacts.json", json_encode($contacts));
 
       /*Ahora vamos a ver como redirigimos al navegador para que nos devuelva a la página de index*/
-      header("Location: index.php"); /*Definimos una cabecera y le indicamos que vuelva a nuestro index*/
+      header("Location: home.php"); /*Definimos una cabecera y le indicamos que vuelva a nuestro index*/
     }
   } 
 ?>
 
-<?php require "partials/header.php" ?>
+<?php require "partials/header.php" ?> <!--Reutilizamos el HTML con una ruta PHP para no tener que escribirlo cada vez-->
 
 <div class="container pt-5">
     <div class="row justify-content-center">

@@ -36,12 +36,12 @@
           ":phone_number" => $_POST["phone_number"]
         ]);
       
-        header("Location: index.php"); //Definimos una cabecera y le indicamos que vuelva a nuestro index
+        header("Location: home.php"); //Definimos una cabecera y le indicamos que vuelva a nuestro index
       }
     } 
 ?>
 
-<?php require "partials/header.php" ?> <!--Reutilizamos el HTML para no tener que escribirlo cada vez-->
+<?php require "partials/header.php" ?> <!--Reutilizamos el HTML con una ruta PHP para no tener que escribirlo cada vez-->
 
 <div class="container pt-5">
     <div class="row justify-content-center">

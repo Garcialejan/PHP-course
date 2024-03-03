@@ -21,4 +21,4 @@ if ($statement->rowCount() == 0) {
 // Shortcut para no tener que hacer el bind usando un array asociativo $statement->execute([":id" => $id]);
 $conn->prepare("DELETE FROM contacts WHERE id = :id")->execute([":id" => $id]);
 
-header("LOCATION: index.php");
+header("LOCATION: home.php");
