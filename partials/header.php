@@ -21,11 +21,11 @@
 
     <!-- Static Content -->
     <link rel="stylesheet" href="./static/css/index.css">
-    <?php $uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH)?> 
+    <?php $uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) ?> 
     <!--Utilizamos SERVER para asignar la ruta en la que estoy. Esto lo hacemos porque solo queremos cargar el js para formatear la imagen cuando estoy en index
         Con el parse_url evitamos los querystrings y dejamos solo el PATH que nos interesa
         La diferencia entre URL y URI es que la URL incorpora el protocolo HTTP y la URI es un identificador global. Todas las URL son URI pero no todas las URI son URL-->
-    <?php if ($uri == "/contacts-app/" or $uri == "/contacts-app/index.php"): ?> 
+    <?php if ($uri == "/contacts-app/" || $uri == "/contacts-app/index.php"): ?> 
         <script defer src="./static/js/welcome.js"></script>
     <?php endif ?> 
 

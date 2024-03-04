@@ -17,12 +17,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="home.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="add.php">Add Contact</a> <!--Linkeamos para que cuando se aprete add contact vaya al add.php-->
+          <a class="nav-link" href="add.php">Add Contact</a> Linkeamos para que cuando se aprete add contact vaya al add.php
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="register.php">Register</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.php">Login</a> <!--Linkeamos para que cuando se aprete add contact vaya al add.php-->
       </ul>
     </div>
   </div>
