@@ -7,9 +7,11 @@ USE contacts_app;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE, --Por si llega un correo a la base de datos que ya existe. Evitamos correos duplicados, aunque lo vamos a comprobar manualmente en el PHP
     password VARCHAR(255)
 );
+
+INSERT INTO users (name, email, password) VALUES ("test", "test@test.com", "123")
 
 CREATE TABLE contacts (
     id INT AUTO_INCREMENT PRIMARY KEY,

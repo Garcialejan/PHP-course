@@ -3,6 +3,11 @@
 <?php
   require "database.php"; //Llamamos a la base de datos. Con ello tenemos disponible la variable conn, que permite connectarnos a la base de datos
 
+  if (!isset($_SESSIOn["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
+    header("LOCATION: login.php");
+    return; //Si no estas autenticado no ejecutamos el resto de este código
+  } 
+
 /*En PHP existen las variables super globales, que significa que están disponibles en cualquier archivo de nuestro PHP
 * Por ejemplo, la supervariable _SERVER que contiene info sobre la petición HTTP que nos han mandado, además de más cosas*/
 

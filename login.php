@@ -9,39 +9,32 @@
 $error = null; // POr defecto asumimos que no hay errores
 
   if($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["password"])) {
+    if (empty($_POST["email"]) || empty($_POST["password"])) {
       $error = "Please fill all the fields";
     } else if (!str_contains($_POST["email"], "@")) { //Si el email no contiene una arroba enviamos un mensaje de que no es válido
       $error = "Email format incorret."; //Podríamos usar librerías para validar email pero hemos hecho una validación muy simple para probar
     } else {
-      $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+      $statement = $conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
       $statement->bindParam(":email", $_POST["email"]); //Le pasamos como email lo que nos llega por el POST y evitamos inyecciones de SQL
       $statement->execute();
 
-      if ($statement->rowCount() > 0) { //Si el correo ya existe (existe alguna fila/nos devuelve alguna fila), indicamos que no es posible registrarse con dicho correo porque ya existe en la base de datos
-        $error = "This email is already in use.";
+      if ($statement->rowCount() == 0) { //Si el usuario no existe y por tanto rowcount=0, se ha fallado en el correo o en la contraseña.
+        $error = "Invalid credentials.";
       } else {
-        $conn
-          ->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)") //Preparamos una sentencia SQL para incluir el usuario en la base de datos
-          ->execute([
-            ":name" => $_POST["name"],
-            ":email" => $_POST["email"],          
-            ":password" => password_hash($_POST["password"], PASSWORD_BCRYPT) //Hasheamos la contraseña con la librería BCRYPT para que no aparezca tal cual en la base de datos
-          ]);
-
-          $statement = $conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
-          $statement->bindParam(":email", $_POST["email"]); //Le pasamos como email lo que nos llega por el POST y evitamos inyecciones de SQL
-          $statement->execute();
-          $user = $statement->fetch(PDO::FETCH_ASSOC); //Generamos el usuario como un array asociativo (diccionario).
-
-          session_start(); //Esto lo que hace es que el navegador te asigna una sesión en el servidor, si no tienes ninguna creada todavía (repasar fichero login.php)
+        $user = $statement->fetch(PDO::FETCH_ASSOC); //Si no da cero, generamos el usuario como un array asociativo.
+        //Podemos acceder a su email, nombre y contraseña en forma de arrays y así podemos enlazar al usuario con sus contactos
+        if (!password_verify($_POST["password"], $user["password"])) { //Si la contraseña no coincide con lo que tenemos en la base de datos le damos un error
+          $error = "Incorrect credential.";
+        } else {//Si el usuario existe y la contraseña es correcta, ya podemos logear al usuario (sesiones y cookies)
+          session_start(); //Esto lo que hace es que el navegador te asigna una sesión en el servidor, si no tienes ninguna creada todavía
           //En caso de que tengas una sesión ya creada el navegador ya sabe que sesión tienes porque te manda la cookie
           //Tenemos una también una variable superglobal $_SESSION, al igual que con $_GET y $_POST
+          unset($user["password"]); //Eliminamos la info de la password en la sesion. Se hace por seguridad (¿un poco paranoico no?)
           $_SESSION["user"] = $user; 
 
-          //Con esto lo que hacemos es que al registrarnos, nos logeamos directamente
 
-        header("LOCATION: home.php");
+          header("LOCATION: home.php");
+        }
       }
     }
   } 
@@ -53,23 +46,15 @@ $error = null; // POr defecto asumimos que no hay errores
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">Register</div>
+          <div class="card-header">Login</div>
           <div class="card-body">
             <?php if ($error != null):?>
               <p class="text-danger">
                 <?= $error ?> <!--Si se produce un error, devolvemos el valor de la cadena error resaltado en rojo-->
               </p>
             <?php endif ?>
-            <form method="POST" action="register.php"> <!--El metodo POST indica que las peticiones HTTP tipo POST. 
+            <form method="POST" action="login.php"> <!--El metodo POST indica que las peticiones HTTP tipo POST. 
             Action para que mande la respuesta, y definimos el archivo, en este caso, será este mismo archivo-->
-              <div class="mb-3 row">
-                <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
-  
-                <div class="col-md-6">
-                  <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
-                </div>
-              </div>
-  
               <div class="mb-3 row">
                 <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
   

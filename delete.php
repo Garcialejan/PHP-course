@@ -2,6 +2,11 @@
 
 require "database.php"; //No es un import como tal, con "require" es como si introducimos el code de database.php en este archivo
 
+if (!isset($_SESSIOn["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
+  header("LOCATION: login.php");
+  return; //Si no estas autenticado no ejecutamos el resto de este código
+} 
+
 //Usamos la variable super global (significa que están disponibles en cualquier archivo de nuestro PHP) $GET para ver la query string
 $id = $_GET["id"];
 

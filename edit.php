@@ -1,5 +1,10 @@
 <?php // Copiamos el contenido de add-php porque el formulario es el mismo y lo moedificamos para generar la edición
-  require "database.php"; 
+  require "database.php";
+
+  if (!isset($_SESSIOn["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
+    header("LOCATION: login.php");
+    return; //Si no estas autenticado no ejecutamos el resto de este código
+  }
 
   $id = $_GET["id"]; // Usamos la misma lógica que en el delete.php para comprobar si existe un contacto
   
