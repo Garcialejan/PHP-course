@@ -15,13 +15,20 @@ $id = $_GET["id"];
 //Podrían hacernos inyecciones de SQL, por ello utilizamos el statment y el bindParam
 //A continuación, para evitar falloos en la base de datos vamos a comprobar si el id seleccionado existe, y si no existe mostraremos un error 404notfound
 
-$statement = $conn->prepare("SELECT * FROM contacts WHERE id = :id");
+$statement = $conn->prepare("SELECT * FROM contacts WHERE id = :id LIMIT 1");
 $statement->bindParam(":id", $id);
 $statement->execute();
 
 if ($statement->rowCount() == 0) {
   http_response_code(404);
   echo("HTTP 404 NOT FOUND"); //Echo es como un print en python
+  return;
+}
+
+$contact = $statement->fetch(PDO::FETCH_ASSOC); //Una vez comprobado que existe el usuario, sacamos la info del usuario (sacamos un diccinario con su info con el FETCH_ASSOC)
+if ($contact["user_id"] !== $_SESSION["user"]["id"]) { //Si el contacto anterior es distinto al de la sesion, sacamos un error 403 (no autorizado)
+  http_response_code(403);
+  echo("HTTP 403 UNAUTHORIZED");
   return;
 }
 

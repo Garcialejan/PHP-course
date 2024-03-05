@@ -21,7 +21,13 @@
   }
   // En caso de que sí exista el contacto, nosotros queremos que nos lo proporcione para poder modificarlo
 
-  $contact = $statement->fetch(PDO::FETCH_ASSOC); // De esta forma conseguimos que nos develva directamente un array asociativo ["name" => "Pepe"]
+  $contact = $statement->fetch(PDO::FETCH_ASSOC); // Una vez comprobado que existe el usuario, sacamos la info del mismo en un array asociativo ["name" => "Pepe"]. Un diccionario
+  if ($contact["user_id"] !== $_SESSION["user"]["id"]) { //Si el contacto anterior es distinto al de la sesion, sacamos un error 403 (no autorizado)
+    http_response_code(403);
+    echo("HTTP 403 UNAUTHORIZED");
+    return;
+  }
+
 
 
   $error = null; 
