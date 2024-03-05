@@ -48,8 +48,11 @@
           ":name" => $_POST["name"], //Con el POST cogemos lo que nos manda el usuario desde el formulario
           ":phone_number" => $_POST["phone_number"]
         ]);
+
+        $_SESSION["flash"] = ["message" => "Contact {$_POST["name"]} updated."];
       
         header("Location: home.php"); //Definimos una cabecera y le indicamos que vuelva a nuestro index
+        return; //Lo ponemos porque la lógica lo exige para que se pueda mostrar el mensaje de contacto añadido
       }
     } 
 ?>

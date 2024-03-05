@@ -33,8 +33,9 @@ $error = null; // POr defecto asumimos que no hay errores
       $statement = $conn->prepare("INSERT INTO contacts (user_id, name, phone_number) VALUES ({$_SESSION["user"]["id"]},:name, :phone_number)"); 
       $statement->bindParam(":name", $_POST["name"]); //bindParam analiza y elimina directamente las inyecciones SQl $_POST["name"] es lo que viene del cliente que rellena el formulario
       $statement->bindParam(":phone_number", $_POST["phone_number"]);
-      $statement->execute(); 
+      $statement->execute();
       
+      $_SESSION["flash"] = ["message" => "Contact {$_POST["name"]} added."]; //Mensaje tipo flash cuando se añada un nuevo contacto
 
       /*A continuación, intentamos almacenar esto en un archivo. Lo dejamos comentado porque vamos a configuaralo para que se conecte con la base de datos*/
       //if (file_exists("contacts.json")) {
@@ -49,6 +50,7 @@ $error = null; // POr defecto asumimos que no hay errores
 
       /*Ahora vamos a ver como redirigimos al navegador para que nos devuelva a la página de index*/
       header("Location: home.php"); /*Definimos una cabecera y le indicamos que vuelva a nuestro index*/
+      return; //Lo ponemos porque la lógica lo exige para que se pueda mostrar el mensaje de contacto añadido
     }
   } 
 ?>

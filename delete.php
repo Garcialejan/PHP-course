@@ -35,4 +35,6 @@ if ($contact["user_id"] !== $_SESSION["user"]["id"]) { //Si el contacto anterior
 // Shortcut para no tener que hacer el bind usando un array asociativo $statement->execute([":id" => $id]);
 $conn->prepare("DELETE FROM contacts WHERE id = :id")->execute([":id" => $id]);
 
+$_SESSION["flash"] = ["message" => "Contact {$contact["name"]} deleted."]; //Mensaje tipo flash cuando se elimina un contacto ya existente
+
 header("LOCATION: home.php");
