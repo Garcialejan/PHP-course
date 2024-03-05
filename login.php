@@ -3,10 +3,12 @@
 <?php
   require "database.php"; //Llamamos a la base de datos. Con ello tenemos disponible la variable conn, que permite connectarnos a la base de datos
 
+  session_start(); //Si estamos loggeados, existe la sesion (revisar fichero login.php)
+
 /*En PHP existen las variables super globales, que significa que están disponibles en cualquier archivo de nuestro PHP
 * Por ejemplo, la supervariable _SERVER que contiene info sobre la petición HTTP que nos han mandado, además de más cosas*/
 
-$error = null; // POr defecto asumimos que no hay errores
+$error = null; // Por defecto asumimos que no hay errores
 
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["email"]) || empty($_POST["password"])) {

@@ -16,12 +16,14 @@ require "database.php";
 
 session_start(); //Si estamos loggeados, existe la sesion (revisar fichero login.php)
 
-if (!isset($_SESSIOn["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
+if (!isset($_SESSION["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
   header("LOCATION: login.php");
   return; //Si no estas autenticado no ejecutamos el resto de este código
 } 
 
-$contacts = $conn->query("SELECT * FROM contacts"); //El método query ejecuta una consulta SQL con la que pedimos los datos a la base de datos
+$contacts = $conn->query("SELECT * FROM contacts WHERE user_id = {$_SESSION["user"]["id"]}"); //El método query ejecuta una consulta SQL con la que pedimos los datos a la base de datos
+//Especificamos que el user_id es el del que tiene iniciada la sesión (con el WHERE) para que solo nos saque los contactos de la persona que se ha logeado
+//Utilizamos las llaves porque no se trata de una variable  simple si no que tenemos que coger claves que forman parte de un diccionario
 
 ?>
 

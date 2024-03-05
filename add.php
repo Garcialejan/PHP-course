@@ -3,7 +3,9 @@
 <?php
   require "database.php"; //Llamamos a la base de datos. Con ello tenemos disponible la variable conn, que permite connectarnos a la base de datos
 
-  if (!isset($_SESSIOn["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
+  session_start(); //Si estamos loggeados, existe la sesion (revisar fichero login.php)
+
+  if (!isset($_SESSION["user"])) { //Si no estamos autentificados por el navegador, entonces redirigimos al php de login para que el usuario inicie la sesión
     header("LOCATION: login.php");
     return; //Si no estas autenticado no ejecutamos el resto de este código
   } 
@@ -28,7 +30,7 @@ $error = null; // POr defecto asumimos que no hay errores
 
       // Para evitar los problemas de inyección de SQL del código anterior usamos :nombre_parámetro para preparar la sentencia
       // En PHP, el operador -> se utiliza para acceder a métodos y propiedades de un objeto
-      $statement = $conn->prepare("INSERT INTO contacts (name, phone_number) VALUES (:name, :phone_number)");
+      $statement = $conn->prepare("INSERT INTO contacts (user_id, name, phone_number) VALUES ({$_SESSION["user"]["id"]},:name, :phone_number)"); 
       $statement->bindParam(":name", $_POST["name"]); //bindParam analiza y elimina directamente las inyecciones SQl $_POST["name"] es lo que viene del cliente que rellena el formulario
       $statement->bindParam(":phone_number", $_POST["phone_number"]);
       $statement->execute(); 
